@@ -10,7 +10,8 @@
 <link href="Olympic_Presentation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.3.450">
 
-  <title>Olympic Gymnastics Prediction</title>
+  <meta name="author" content="Aidan Bramer    Department of Mathematics  University of Dayton  ">
+  <title>Olympic Gymnastics Prediction  Using statistical methods to get medal probabilities   </title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -30,7 +31,7 @@
     }
   </style>
   <link rel="stylesheet" href="Olympic_Presentation_files/libs/revealjs/dist/theme/quarto.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style_files/styles.css">
   <link href="Olympic_Presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="Olympic_Presentation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="Olympic_Presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -321,16 +322,27 @@
       margin-right: 0; 
     }
   </style>
+  
+  <script src="Olympic_Presentation_files/libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="Olympic_Presentation_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Olympic Gymnastics Prediction</h1>
-  <p class="subtitle">Using statistical methods to get medal probabilities</p>
+  <h1 class="title">Olympic Gymnastics Prediction<br>
+</h1><h2><br>
+Using statistical methods to get medal probabilities<br>
+</h2><br>
+<br>
 
 <div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Aidan Bramer <br><br> Department of Mathematics<br> University of Dayton <br> 
+</div>
+</div>
 </div>
 
 </section>
@@ -348,28 +360,100 @@
 <section id="data-structure" class="slide level2">
 <h2>Data Structure</h2>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>      LastName FirstName Gender Country                     Date
-112 ABDELSALAM      Jana      w     EGY 29 Oct 2022 - 6 Nov 2022
-113 ABDELSALAM      Jana      w     EGY 29 Oct 2022 - 6 Nov 2022
-114 ABDELSALAM      Jana      w     EGY 29 Oct 2022 - 6 Nov 2022
-115 ABDELSALAM      Jana      w     EGY 29 Oct 2022 - 6 Nov 2022
-116 ABDELSALAM      Jana      w     EGY 29 Oct 2022 - 6 Nov 2022
-117 ABDELSALAM      Jana      w     EGY 29 Oct 2022 - 6 Nov 2022
-                                         Competition  Round           Location
-112 51st FIG Artistic Gymnastics World Championships AAqual Liverpool, England
-113 51st FIG Artistic Gymnastics World Championships   qual Liverpool, England
-114 51st FIG Artistic Gymnastics World Championships AAqual Liverpool, England
-115 51st FIG Artistic Gymnastics World Championships   qual Liverpool, England
-116 51st FIG Artistic Gymnastics World Championships AAqual Liverpool, England
-117 51st FIG Artistic Gymnastics World Championships   qual Liverpool, England
-    Apparatus Rank D_Score E_Score Penalty  Score
-112        BB  100     4.8   6.200      NA 11.000
-113        BB  100     4.8   6.200      NA 11.000
-114        FX  109     4.4   7.466     0.1 11.766
-115        FX  109     4.4   7.466     0.1 11.766
-116        UB   52     4.8   8.000      NA 12.800
-117        UB   52     4.8   8.000      NA 12.800</code></pre>
+<div class="cell-output-display">
+<table class="table" data-quarto-postprocess="true" style="font-size: 20px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">LastName</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">FirstName</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Gender</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Country</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Date</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Competition</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Round</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Location</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Apparatus</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Rank</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">D_Score</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">E_Score</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Penalty</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">6772</td>
+<td style="text-align: left;">Makovits</td>
+<td style="text-align: left;">Mirtill</td>
+<td style="text-align: left;">w</td>
+<td style="text-align: left;">HUN</td>
+<td style="text-align: left;">11-14 Aug 2022</td>
+<td style="text-align: left;">2022 Senior European Championships</td>
+<td style="text-align: left;">qual</td>
+<td style="text-align: left;">Munich, Germany</td>
+<td style="text-align: left;">BB</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">4.5</td>
+<td style="text-align: right;">6.900</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">11.400</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3665</td>
+<td style="text-align: left;">Gobadze</td>
+<td style="text-align: left;">Ani</td>
+<td style="text-align: left;">w</td>
+<td style="text-align: left;">GEO</td>
+<td style="text-align: left;">11-16 Apr 2023</td>
+<td style="text-align: left;">2023 10th Senior European Championships</td>
+<td style="text-align: left;">qual</td>
+<td style="text-align: left;">Antalya, Turkey</td>
+<td style="text-align: left;">UB</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">3.2</td>
+<td style="text-align: right;">6.266</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">9.466</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5403</td>
+<td style="text-align: left;">Kinsella</td>
+<td style="text-align: left;">Alice</td>
+<td style="text-align: left;">w</td>
+<td style="text-align: left;">ENG</td>
+<td style="text-align: left;">29 Jul-2 Aug, 2023</td>
+<td style="text-align: left;">BIRMINGHAM 2022 Commonwealth Games</td>
+<td style="text-align: left;">final</td>
+<td style="text-align: left;">Birmingham, England</td>
+<td style="text-align: left;">FX</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.6</td>
+<td style="text-align: right;">7.766</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">13.366</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8796</td>
+<td style="text-align: left;">Petrova</td>
+<td style="text-align: left;">Marija</td>
+<td style="text-align: left;">w</td>
+<td style="text-align: left;">LAT</td>
+<td style="text-align: left;">11-16 Apr 2023</td>
+<td style="text-align: left;">2023 10th Senior European Championships</td>
+<td style="text-align: left;">qual</td>
+<td style="text-align: left;">Antalya, Turkey</td>
+<td style="text-align: left;">VT1</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">3.4</td>
+<td style="text-align: right;">8.500</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">11.900</td>
+</tr>
+</tbody>
+</table>
+
+
 </div>
 </div>
 <p>General structure is 5008 rows 16 columns.</p>
@@ -382,16 +466,69 @@
 <li>Predict Possible Scores for these Athletes</li>
 </ul>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>      LastName FirstName  Score
-396    ANDRADE    Rebeca 12.733
-1189     BLACK  Elsabeth 13.566
-1201   BLAKELY      Skye 13.300
-1265     BOYER    Marine 13.300
-5692    KOVACS    Zsofia 12.733
-7487    MIYATA     Shoko 13.533
-8445        OU    Yushan 13.000
-12036 WATANABE    Hazuki 13.600</code></pre>
+<div class="cell-output-display">
+<table class="table" data-quarto-postprocess="true" style="font-size: 20px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">First Name</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Last Name</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">396</td>
+<td style="text-align: left;">Andrade</td>
+<td style="text-align: left;">Rebeca</td>
+<td style="text-align: right;">12.733</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1189</td>
+<td style="text-align: left;">Black</td>
+<td style="text-align: left;">Elsabeth</td>
+<td style="text-align: right;">13.566</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1201</td>
+<td style="text-align: left;">Blakely</td>
+<td style="text-align: left;">Skye</td>
+<td style="text-align: right;">13.300</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1265</td>
+<td style="text-align: left;">Boyer</td>
+<td style="text-align: left;">Marine</td>
+<td style="text-align: right;">13.300</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5692</td>
+<td style="text-align: left;">Kovacs</td>
+<td style="text-align: left;">Zsofia</td>
+<td style="text-align: right;">12.733</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">7487</td>
+<td style="text-align: left;">Miyata</td>
+<td style="text-align: left;">Shoko</td>
+<td style="text-align: right;">13.533</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">8445</td>
+<td style="text-align: left;">Ou</td>
+<td style="text-align: left;">Yushan</td>
+<td style="text-align: right;">13.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12036</td>
+<td style="text-align: left;">Watanabe</td>
+<td style="text-align: left;">Hazuki</td>
+<td style="text-align: right;">13.600</td>
+</tr>
+</tbody>
+</table>
+
+
 </div>
 </div>
 </section>
@@ -401,57 +538,59 @@
 <p>To qualify for the Olympics every athlete will have at least 2 scores based on the two Olympic qualifying rounds.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table>
+<table class="table" data-quarto-postprocess="true" style="font-size: 20px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr class="header">
-<th style="text-align: left;">FirstName</th>
-<th style="text-align: left;">LastName</th>
-<th style="text-align: right;">DataPointsCount</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">First Name</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Last Name</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Data Points Count</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Elsabeth</td>
-<td style="text-align: left;">BLACK</td>
+<td style="text-align: left;">Black</td>
 <td style="text-align: right;">4</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Hazuki</td>
-<td style="text-align: left;">WATANABE</td>
+<td style="text-align: left;">Watanabe</td>
 <td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Marine</td>
-<td style="text-align: left;">BOYER</td>
-<td style="text-align: right;">7</td>
+<td style="text-align: left;">Boyer</td>
+<td style="text-align: right;">9</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Rebeca</td>
-<td style="text-align: left;">ANDRADE</td>
+<td style="text-align: left;">Andrade</td>
 <td style="text-align: right;">4</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Shoko</td>
-<td style="text-align: left;">MIYATA</td>
+<td style="text-align: left;">Miyata</td>
 <td style="text-align: right;">7</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Skye</td>
-<td style="text-align: left;">BLAKELY</td>
+<td style="text-align: left;">Blakely</td>
 <td style="text-align: right;">2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Yushan</td>
-<td style="text-align: left;">OU</td>
+<td style="text-align: left;">Ou</td>
 <td style="text-align: right;">7</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Zsofia</td>
-<td style="text-align: left;">KOVACS</td>
+<td style="text-align: left;">Kovacs</td>
 <td style="text-align: right;">7</td>
 </tr>
 </tbody>
 </table>
+
+
 </div>
 </div>
 </section>
@@ -459,10 +598,10 @@
 <h2>Model Building</h2>
 <ul>
 <li>Based on each athlete having a different number of scores it caused a problem in a regression approach</li>
-<li>First there would be a need to use summary statistics to for each athlete</li>
-<li>This approach caused a problem because if an athlete had less data points then they only had the Olympic qualifying scores-biased.</li>
+<li>First there would be a need to use summary statistics for each athlete</li>
+<li>This approach caused a problem because if an athlete had less data points then they only had the Olympic qualifying scores-biased</li>
 <li>Hard to justify using all athletes scores to predict only the best athletes</li>
-<li>the assumption: if these are 8 best athletes then they would have a similar athletic performance.</li>
+<li>the assumption: if these are 8 best athletes then they would have a similar athletic performance</li>
 </ul>
 </section>
 <section id="basics-of-kernel-density-estimator" class="slide level2">
@@ -497,7 +636,7 @@ f_h(x) = \frac{1}{nh} \sum_{i=1}^n w_i K\left(\frac{x - x_i}{h}\right)
 <p>The Gaussian (or Normal) kernel has the form:</p>
 <p><span class="math display">\[
 K(u) = \frac{1}{\sqrt{2\pi}} e^{-\frac{1}{2} u^2}
-\]</span> ( u ) represents the standardized distance: <span class="math display">\[ u = \frac{x - x_i}{h} \]</span> Characteristics: Infinitely long tails. Smooth, bell-shaped curve. Influences the KDE even at considerable distances.</p>
+\]</span> ( u ) represents the standardized distance: <span class="math display">\[ u = \frac{x - x_i}{h} \]</span> Characteristics: Infinitely long tails Smooth, bell-shaped curve. Influences the KDE even at considerable distances</p>
 </section>
 <section id="epanechnikov-kernel-an-alternative" class="slide level2">
 <h2>Epanechnikov Kernel: An Alternative</h2>
@@ -507,9 +646,9 @@ K(u) = \frac{3}{4}(1 - u^2) \quad \text{for } |u| \leq 1
 \]</span></p>
 <p>Characteristics:</p>
 <ul>
-<li>Compact support (zero outside the range [-1, 1]).</li>
-<li>Parabolic shape.</li>
-<li>Considered “optimal” in a mean integrated squared error sense.</li>
+<li>Compact support (zero outside the range [-1, 1])</li>
+<li>Parabolic shape</li>
+<li>Considered “optimal” in a mean integrated squared error sense</li>
 </ul>
 </section>
 <section id="why-epanechnikov" class="slide level2">
@@ -531,79 +670,363 @@ K(u) = \frac{3}{4}(1 - u^2) \quad \text{for } |u| \leq 1
 <section id="simulation-study" class="slide level2">
 <h2>Simulation Study</h2>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>  Elsabeth.BLACK Hazuki.WATANABE Marine.BOYER Rebeca.ANDRADE Shoko.MIYATA
-1       13.84028        12.96821     13.49201       12.76297     13.59739
-2       13.64671        13.85862     12.78410       12.65237     13.38163
-3       13.35912        13.44383     12.18680       12.58048     13.55867
-4       13.81263        13.91945     12.91683       13.36574     13.49781
-5       13.86794        13.15625     12.82281       13.72519     13.40929
-6       12.67333        12.85760     12.46333       13.54270     13.92933
-  Skye.BLAKELY Yushan.OU Zsofia.KOVACS
-1     13.11894  13.64350      13.44323
-2     13.50551  12.43965      13.26625
-3     13.39506  13.52753      13.52619
-4     12.55564  13.61588      13.58149
-5     13.90313  12.82068      13.53725
-6     13.98045  14.05766      13.92439</code></pre>
+<div class="cell-output-display">
+<table class="table" data-quarto-postprocess="true" style="font-size: 20px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Elsabeth Black</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Hazuki Watanabe</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Marine Boyer</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Rebeca Andrade</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Shoko Miyata</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Skye Blakely</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Yushan Ou</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Zsofia Kovacs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">13.78529</td>
+<td style="text-align: right;">13.29861</td>
+<td style="text-align: right;">13.51149</td>
+<td style="text-align: right;">13.11144</td>
+<td style="text-align: right;">13.82491</td>
+<td style="text-align: right;">13.36353</td>
+<td style="text-align: right;">13.28248</td>
+<td style="text-align: right;">13.59079</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">13.41941</td>
+<td style="text-align: right;">13.54073</td>
+<td style="text-align: right;">13.65676</td>
+<td style="text-align: right;">13.05226</td>
+<td style="text-align: right;">13.37813</td>
+<td style="text-align: right;">14.12054</td>
+<td style="text-align: right;">12.20335</td>
+<td style="text-align: right;">13.42937</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">13.82295</td>
+<td style="text-align: right;">13.44389</td>
+<td style="text-align: right;">12.72593</td>
+<td style="text-align: right;">12.69181</td>
+<td style="text-align: right;">13.64189</td>
+<td style="text-align: right;">13.42259</td>
+<td style="text-align: right;">13.49186</td>
+<td style="text-align: right;">13.73606</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">13.48398</td>
+<td style="text-align: right;">13.31476</td>
+<td style="text-align: right;">13.78052</td>
+<td style="text-align: right;">13.83771</td>
+<td style="text-align: right;">13.85183</td>
+<td style="text-align: right;">13.55681</td>
+<td style="text-align: right;">13.67440</td>
+<td style="text-align: right;">13.43475</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">12.53700</td>
+<td style="text-align: right;">13.44389</td>
+<td style="text-align: right;">13.97960</td>
+<td style="text-align: right;">13.67093</td>
+<td style="text-align: right;">13.90566</td>
+<td style="text-align: right;">13.99168</td>
+<td style="text-align: right;">12.45568</td>
+<td style="text-align: right;">13.24105</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">13.51088</td>
+<td style="text-align: right;">13.74519</td>
+<td style="text-align: right;">13.66214</td>
+<td style="text-align: right;">12.35288</td>
+<td style="text-align: right;">13.52885</td>
+<td style="text-align: right;">13.34205</td>
+<td style="text-align: right;">13.48649</td>
+<td style="text-align: right;">12.89670</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">13.34946</td>
+<td style="text-align: right;">13.58378</td>
+<td style="text-align: right;">12.44076</td>
+<td style="text-align: right;">12.82093</td>
+<td style="text-align: right;">12.15081</td>
+<td style="text-align: right;">13.60513</td>
+<td style="text-align: right;">13.15363</td>
+<td style="text-align: right;">13.11730</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">13.77991</td>
+<td style="text-align: right;">13.48693</td>
+<td style="text-align: right;">12.22016</td>
+<td style="text-align: right;">13.68169</td>
+<td style="text-align: right;">13.49117</td>
+<td style="text-align: right;">13.50849</td>
+<td style="text-align: right;">13.23416</td>
+<td style="text-align: right;">13.62845</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">13.02663</td>
+<td style="text-align: right;">13.92275</td>
+<td style="text-align: right;">13.47383</td>
+<td style="text-align: right;">12.89624</td>
+<td style="text-align: right;">12.78600</td>
+<td style="text-align: right;">13.68029</td>
+<td style="text-align: right;">13.00867</td>
+<td style="text-align: right;">12.93974</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">13.34408</td>
+<td style="text-align: right;">13.14258</td>
+<td style="text-align: right;">13.95269</td>
+<td style="text-align: right;">13.21903</td>
+<td style="text-align: right;">13.70110</td>
+<td style="text-align: right;">13.44943</td>
+<td style="text-align: right;">13.77104</td>
+<td style="text-align: right;">13.57464</td>
+</tr>
+</tbody>
+</table>
+
+
 </div>
 </div>
 </section>
 <section id="medal-counts" class="slide level2">
 <h2>Medal Counts</h2>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>                 Gold Silver Bronze
-Elsabeth.BLACK  0.121  0.148  0.119
-Hazuki.WATANABE 0.153  0.132  0.152
-Marine.BOYER    0.134  0.148  0.123
-Rebeca.ANDRADE  0.066  0.089  0.127
-Shoko.MIYATA    0.157  0.117  0.134
-Skye.BLAKELY    0.150  0.129  0.112
-Yushan.OU       0.117  0.136  0.111
-Zsofia.KOVACS   0.102  0.101  0.122</code></pre>
+<div class="cell-output-display">
+<table class="table" data-quarto-postprocess="true" style="font-size: 20px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Gold</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Silver</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Bronze</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Elsabeth Black</td>
+<td style="text-align: right;">0.120</td>
+<td style="text-align: right;">0.122</td>
+<td style="text-align: right;">0.134</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hazuki Watanabe</td>
+<td style="text-align: right;">0.155</td>
+<td style="text-align: right;">0.156</td>
+<td style="text-align: right;">0.136</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Marine Boyer</td>
+<td style="text-align: right;">0.137</td>
+<td style="text-align: right;">0.135</td>
+<td style="text-align: right;">0.121</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rebeca Andrade</td>
+<td style="text-align: right;">0.060</td>
+<td style="text-align: right;">0.081</td>
+<td style="text-align: right;">0.100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Shoko Miyata</td>
+<td style="text-align: right;">0.167</td>
+<td style="text-align: right;">0.118</td>
+<td style="text-align: right;">0.152</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Skye Blakely</td>
+<td style="text-align: right;">0.142</td>
+<td style="text-align: right;">0.146</td>
+<td style="text-align: right;">0.110</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Yushan Ou</td>
+<td style="text-align: right;">0.131</td>
+<td style="text-align: right;">0.132</td>
+<td style="text-align: right;">0.135</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Zsofia Kovacs</td>
+<td style="text-align: right;">0.088</td>
+<td style="text-align: right;">0.110</td>
+<td style="text-align: right;">0.112</td>
+</tr>
+</tbody>
+</table>
+
+
 </div>
 </div>
 </section>
 <section id="other-apparatus-results" class="slide level2">
 <h2>Other Apparatus Results</h2>
-<p>Uneven Bars</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>
+Uneven Bars
+</h3>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>                 Gold Silver Bronze
-Elisabeth.SEITZ 0.103  0.132  0.111
-Naomi.VISSER    0.059  0.077  0.096
-Nina.DERWAEL    0.169  0.157  0.130
-Rebeca.ANDRADE  0.050  0.067  0.100
-Rui.LUO         0.126  0.124  0.144
-Sanna.VEERMAN   0.121  0.136  0.148
-Shilese.JONES   0.183  0.136  0.139
-Xiaoyuan.WEI    0.189  0.171  0.132</code></pre>
+<div class="cell-output-display">
+<table class="table" data-quarto-postprocess="true" style="font-size: 20px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Gold</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Silver</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Bronze</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Elisabeth Seitz</td>
+<td style="text-align: right;">0.123</td>
+<td style="text-align: right;">0.126</td>
+<td style="text-align: right;">0.149</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Naomi Visser</td>
+<td style="text-align: right;">0.050</td>
+<td style="text-align: right;">0.094</td>
+<td style="text-align: right;">0.104</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nina Derwael</td>
+<td style="text-align: right;">0.166</td>
+<td style="text-align: right;">0.171</td>
+<td style="text-align: right;">0.132</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rebeca Andrade</td>
+<td style="text-align: right;">0.051</td>
+<td style="text-align: right;">0.074</td>
+<td style="text-align: right;">0.089</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rui Luo</td>
+<td style="text-align: right;">0.114</td>
+<td style="text-align: right;">0.130</td>
+<td style="text-align: right;">0.131</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sanna Veerman</td>
+<td style="text-align: right;">0.105</td>
+<td style="text-align: right;">0.110</td>
+<td style="text-align: right;">0.128</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Shilese Jones</td>
+<td style="text-align: right;">0.183</td>
+<td style="text-align: right;">0.127</td>
+<td style="text-align: right;">0.126</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Xiaoyuan Wei</td>
+<td style="text-align: right;">0.208</td>
+<td style="text-align: right;">0.168</td>
+<td style="text-align: right;">0.141</td>
+</tr>
+</tbody>
+</table>
+
+
 </div>
 </div>
-<p>Floor Routine</p>
+</div><div class="column" style="width:50%;">
+<h3>
+Floor Routine
+</h3>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>                   Gold Silver Bronze
-Jade.CAREY        0.130  0.142  0.121
-Jennifer.GADIROVA 0.068  0.094  0.105
-Jessica.GADIROVA  0.194  0.178  0.136
-Jordan.CHILES     0.174  0.140  0.152
-Martina.MAGGIO    0.092  0.101  0.104
-Naomi.VISSER      0.130  0.131  0.147
-Rebeca.ANDRADE    0.144  0.143  0.117
-Shoko.MIYATA      0.068  0.071  0.118</code></pre>
+<div class="cell-output-display">
+<table class="table table-striped table-hover" data-quarto-postprocess="true" style="font-size: 20px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Gold</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Silver</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Bronze</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Jade Carey</td>
+<td style="text-align: right;">0.154</td>
+<td style="text-align: right;">0.133</td>
+<td style="text-align: right;">0.143</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Jennifer Gadirova</td>
+<td style="text-align: right;">0.061</td>
+<td style="text-align: right;">0.099</td>
+<td style="text-align: right;">0.102</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Jessica Gadirova</td>
+<td style="text-align: right;">0.216</td>
+<td style="text-align: right;">0.161</td>
+<td style="text-align: right;">0.131</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Jordan Chiles</td>
+<td style="text-align: right;">0.151</td>
+<td style="text-align: right;">0.160</td>
+<td style="text-align: right;">0.114</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Martina Maggio</td>
+<td style="text-align: right;">0.090</td>
+<td style="text-align: right;">0.112</td>
+<td style="text-align: right;">0.115</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Naomi Visser</td>
+<td style="text-align: right;">0.106</td>
+<td style="text-align: right;">0.117</td>
+<td style="text-align: right;">0.133</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rebeca Andrade</td>
+<td style="text-align: right;">0.158</td>
+<td style="text-align: right;">0.140</td>
+<td style="text-align: right;">0.147</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shoko Miyata</td>
+<td style="text-align: right;">0.064</td>
+<td style="text-align: right;">0.078</td>
+<td style="text-align: right;">0.115</td>
+</tr>
+</tbody>
+</table>
+
+
 </div>
 </div>
+</div>
+</div>
+</section>
+<section id="challenges-and-limitations" class="slide level2">
+<h2>Challenges and Limitations</h2>
+<ul>
+<li>Lack of Data for Certain Athletes</li>
+<li>The goal was to get some way of sampling future events for different medals</li>
+<li>The proportions generated by my assumption that these 8 athletes would have a similar history</li>
+</ul>
 </section>
 <section id="sources" class="slide level2">
 <h2>Sources</h2>
 <p>Chu, Chi-Yang, Daniel J. Henderson, and Christopher F. Parmeter. “On discrete Epanechnikov kernel functions.” Computational statistics &amp; data analysis 116 (2017): 79-105.</p>
 <p>Soh, Youngsung, et al.&nbsp;“Performance evaluation of various functions for kernel density estimation.” Open J Appl Sci 3.1 (2013): 58-64.</p>
-<p>https://www.nbcolympics.com/news/gymnastics-101-competition-format</p>
-
-<img src="images/quarto.png" class="slide-logo r-stretch"><div class="footer footer-default">
-<p><a href="https://quarto.org" class="uri">https://quarto.org</a></p>
+<p><a href="https://www.nbcolympics.com/news/gymnastics-101-competition-format">NBC Olympics</a></p>
+</section>
+<section id="thank-you" class="slide level2">
+<h2>Thank you</h2>
+<p>Special Thank you to my advisor Dr.&nbsp;Tessa Chen.</p>
+<p>Questions?</p>
+<div class="footer footer-default">
+<p><a href="https://www.linkedin.com/in/aidan-bramer-0652b8246/">Aidam Bramer Linkedin Profile</a></p>
 </div>
 </section>
     </div>
