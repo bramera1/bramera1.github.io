@@ -2229,6 +2229,131 @@ question.</p>
 </div>
 <div id="other-models" class="section level1">
 <h1>Other Models</h1>
+<div id="column-4" class="section level2 tabset" data-width="600">
+<h2 class="tabset">Column</h2>
+<div id="logistic-base" class="section level3">
+<h3>Logistic Base</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<pre><code>
+Call:
+glm(formula = quality_binary ~ . - quality, family = &quot;binomial&quot;, 
+    data = train_data)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.9672  -0.9082   0.4517   0.8218   2.6103  
+
+Coefficients:
+                       Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)           1.112e+02  5.113e+01   2.174  0.02970 *  
+fixed.acidity         6.699e-02  5.913e-02   1.133  0.25723    
+volatile.acidity     -4.752e+00  3.552e-01 -13.381  &lt; 2e-16 ***
+citric.acid          -3.889e-01  3.022e-01  -1.287  0.19818    
+residual.sugar        1.164e-01  2.211e-02   5.263 1.42e-07 ***
+chlorides            -1.725e+00  1.212e+00  -1.423  0.15486    
+free.sulfur.dioxide   1.429e-02  2.998e-03   4.767 1.87e-06 ***
+total.sulfur.dioxide -5.954e-03  1.243e-03  -4.792 1.65e-06 ***
+density              -1.212e+02  5.190e+01  -2.335  0.01957 *  
+pH                    6.468e-01  3.473e-01   1.862  0.06255 .  
+sulphates             2.035e+00  3.176e-01   6.407 1.49e-10 ***
+alcohol               7.987e-01  6.903e-02  11.570  &lt; 2e-16 ***
+wine_typeWhite       -6.425e-01  2.250e-01  -2.855  0.00431 ** 
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 5999.4  on 4547  degrees of freedom
+Residual deviance: 4745.9  on 4535  degrees of freedom
+AIC: 4771.9
+
+Number of Fisher Scoring iterations: 4</code></pre>
+<pre><code>
+   0    1 
+2384 4113 </code></pre>
+</div>
+<div id="colinearity-check" class="section level3">
+<h3>Colinearity Check</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<pre><code>       fixed.acidity     volatile.acidity          citric.acid 
+            4.619363             2.424535             1.624106 
+      residual.sugar            chlorides  free.sulfur.dioxide 
+           10.045967             1.589428             2.278744 
+total.sulfur.dioxide              density                   pH 
+            4.194842            17.537272             2.475456 
+           sulphates              alcohol            wine_type 
+            1.586461             3.661513             7.424823 </code></pre>
+</div>
+<div id="logistic-reduced" class="section level3">
+<h3>Logistic Reduced</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<pre><code>
+Call:
+glm(formula = quality_binary ~ . - quality - wine_type - density - 
+    residual.sugar, family = &quot;binomial&quot;, data = train_data)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.9228  -0.9438   0.4606   0.8337   2.5571  
+
+Coefficients:
+                      Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)          -7.033436   1.028935  -6.836 8.16e-12 ***
+fixed.acidity        -0.011828   0.035820  -0.330   0.7412    
+volatile.acidity     -4.312789   0.298569 -14.445  &lt; 2e-16 ***
+citric.acid          -0.341508   0.294067  -1.161   0.2455    
+chlorides            -2.662322   1.167188  -2.281   0.0226 *  
+free.sulfur.dioxide   0.018950   0.002936   6.454 1.09e-10 ***
+total.sulfur.dioxide -0.006130   0.001011  -6.064 1.33e-09 ***
+pH                    0.023902   0.260577   0.092   0.9269    
+sulphates             2.009634   0.298554   6.731 1.68e-11 ***
+alcohol               0.813989   0.039052  20.844  &lt; 2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 5999.4  on 4547  degrees of freedom
+Residual deviance: 4818.0  on 4538  degrees of freedom
+AIC: 4838
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+<div id="column-5" class="section level2 tabset" data-width="400">
+<h2 class="tabset">Column</h2>
+<div id="base-model-result" class="section level3">
+<h3>Base Model Result</h3>
+<p>First I converted the quality data to a binary data. I classified
+wine that is 5 and lower to be classified as poor wine and wine that is
+higher than 5 to be classified as good wine.</p>
+<p>The Model had some evidence of co linearity earlier so I got the VIF
+scores for each variable.</p>
+<p>The VIF score or Variance Inflation Factor is a measure that
+quantifies how much the variance of an estimated regression coefficient
+increases if your predictors are correlated. If there is no correlation
+among the predictors, the VIFs will be 1.</p>
+<p>A VIF above 5 indicates that that variable has colinearity.</p>
+<p>Therefore wine_type, density, and residual sugar were removed for
+colinearity.</p>
+</div>
+<div id="coefficients-1" class="section level3">
+<h3>Coefficients</h3>
+</div>
+<div id="reduced-model-results" class="section level3">
+<h3>Reduced Model Results</h3>
+<p>Accuracy : 0.7378<br />
+95% CI : (0.7177, 0.7572) No Information Rate : 0.6429<br />
+Positive Prediction Value : 0.6067<br />
+Negative Prediction Value : 0.8429</p>
+</div>
+</div>
 </div>
 
 </div>
